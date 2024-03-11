@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Button, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Button, FlatList, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { loadTasks, saveTasks, Task } from './util/storage';
 
 export default function App() {
@@ -37,40 +37,51 @@ export default function App() {
     }
   };
 
-  const renderItem = ({ item, index }: { item: Task; index: number }) => (
-      <View style={styles.taskItem}>
-        <TouchableOpacity onPress={() => toggleTaskCompletion(index)} style={{ flex: 1 }}>
-          <Text style={item.completed ? styles.taskTextCompleted : styles.taskText}>{item.text}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => deleteTask(index)}>
-          <Text style={styles.deleteButton}>Delete</Text>
-        </TouchableOpacity>
-      </View>
-  );
-
   return (
-      <View style={styles.container}>
-        <TextInput
-            style={styles.input}
-            onChangeText={setTask}
-            value={task}
-            placeholder="Add a new task"
-        />
-        <Button onPress={addTask} title="Add Task" color="#841584" />
-        <FlatList
-            data={tasks}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-        />
-      </View>
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.title}>My Awesome ToDo List</Text>
+        <View style={styles.taskContainer}>
+          <TextInput
+              style={styles.input}
+              onChangeText={setTask}
+              value={task}
+              placeholder="Add a new task"
+          />
+          <Button onPress={addTask} title="Add Task" color="#841584" />
+          <FlatList
+              data={tasks}
+              renderItem={({ item, index }) => (
+                  <View style={styles.taskItem}>
+                    <TouchableOpacity onPress={() => toggleTaskCompletion(index)} style={{ flex: 1 }}>
+                      <Text style={item.completed ? styles.taskTextCompleted : styles.taskText}>{item.text}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => deleteTask(index)}>
+                      <Text style={styles.deleteButton}>Delete</Text>
+                    </TouchableOpacity>
+                  </View>
+              )}
+              keyExtractor={(_, index) => index.toString()}
+          />
+        </View>
+        <Text style={styles.createdBy}>Created by Adib Chowdhury</Text>
+      </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 50,
-    marginHorizontal: 20,
+    marginTop: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginVertical: 20,
+  },
+  taskContainer: {
+    flex: 1,
+    paddingHorizontal: 20,
   },
   input: {
     borderWidth: 1,
@@ -97,5 +108,9 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     color: 'red',
+  },
+  createdBy: {
+    textAlign: 'center',
+    marginVertical: 10,
   },
 });
