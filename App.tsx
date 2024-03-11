@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, TextInput, Button, FlatList, Text, Alert, TouchableOpacity } from 'react-native';
-import { loadTasks, saveTasks } from './util/storage';
+import { Alert, Button, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { loadTasks, saveTasks, Task } from './util/storage';
 
 export default function App() {
   const [task, setTask] = useState('');
-  const [tasks, setTasks] = useState<string[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   useEffect(() => {
     const initTasks = async () => {
@@ -16,21 +16,32 @@ export default function App() {
 
   const addTask = () => {
     if (!task.trim()) return;
-    const newTasks = [...tasks, task];
+    const newTasks = [...tasks, { text: task, completed: false }];
     setTasks(newTasks);
     setTask('');
-    saveTasks(newTasks).then(r => console.log('added tasks', newTasks));
+    saveTasks(newTasks);
   };
 
   const deleteTask = (index: number) => {
     const newTasks = tasks.filter((_, taskIndex) => taskIndex !== index);
     setTasks(newTasks);
-    saveTasks(newTasks).then(r => console.log('deleted tasks', newTasks))
+    saveTasks(newTasks);
   };
 
-  const renderItem = ({ item, index }: { item: string; index: number }) => (
+  const toggleTaskCompletion = (index: number) => {
+    const newTasks = tasks.map((t, i) => i === index ? { ...t, completed: !t.completed } : t);
+    setTasks(newTasks);
+    saveTasks(newTasks);
+    if (newTasks[index].completed) {
+      Alert.alert("Task Completed", `"${newTasks[index].text}" is now marked as completed.`);
+    }
+  };
+
+  const renderItem = ({ item, index }: { item: Task; index: number }) => (
       <View style={styles.taskItem}>
-        <Text>{item}</Text>
+        <TouchableOpacity onPress={() => toggleTaskCompletion(index)} style={{ flex: 1 }}>
+          <Text style={item.completed ? styles.taskTextCompleted : styles.taskText}>{item.text}</Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => deleteTask(index)}>
           <Text style={styles.deleteButton}>Delete</Text>
         </TouchableOpacity>
@@ -77,6 +88,12 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     backgroundColor: '#f9c2ff',
     borderRadius: 5,
+  },
+  taskText: {
+    textDecorationLine: 'none',
+  },
+  taskTextCompleted: {
+    textDecorationLine: 'line-through',
   },
   deleteButton: {
     color: 'red',
