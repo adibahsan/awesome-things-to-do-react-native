@@ -4,12 +4,12 @@
     "slug": "awesome-things-to-do",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "icon": "./assets/icon.webp",
+    "userInterfaceStyle": "dark",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/splash.webp",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FFCC75"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -18,9 +18,10 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.adibahsan.awesomethingstodo",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/icon.webp",
+        "backgroundColor": "#14C4F6"
       }
     },
     "web": {
