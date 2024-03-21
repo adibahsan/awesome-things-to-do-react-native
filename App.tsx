@@ -1,10 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, Button, FlatList, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  Alert,
+  Button,
+  FlatList,
+  Modal,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import { loadTasks, saveTasks, Task } from './util/storage';
 
 export default function App() {
   const [task, setTask] = useState('');
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [modalVisible, setModalVisible] = useState(false);
+
 
   useEffect(() => {
     const initTasks = async () => {
@@ -63,7 +76,31 @@ export default function App() {
               keyExtractor={(_, index) => index.toString()}
           />
         </View>
-        <Text style={styles.createdBy}>Created by Adib Chowdhury</Text>
+
+        <TouchableOpacity style={styles.buttonSmall} onPress={() => setModalVisible(true)}>
+          <Text style={styles.buttonSmallText}>Show Developer Info</Text>
+        </TouchableOpacity>
+
+        {/*<Button  title="Show Developer Info" onPress={() => setModalVisible(true)} />*/}
+        <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              setModalVisible(!modalVisible);
+            }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Developer Name: Adib Chowdhury</Text>
+              <Text style={styles.modalText}>Developer Email: adibahsan@example.com</Text>
+              <TouchableOpacity style={styles.buttonSmall} onPress={() => setModalVisible(false)}>
+                <Text style={styles.buttonSmallText}>Show Developer Info</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+        {/*<Text style={styles.createdBy}>Created by Adib Chowdhury</Text>*/}
       </SafeAreaView>
   );
 }
@@ -112,5 +149,54 @@ const styles = StyleSheet.create({
   createdBy: {
     textAlign: 'center',
     marginVertical: 10,
+  },
+
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  },
+  buttonSmall: {
+    borderRadius: 20,
+    padding: 10,
+    backgroundColor: '#841584',
+    width: 150,
+    alignItems: 'center',
+  },
+  buttonSmallText: {
+    color: 'white',
   },
 });
