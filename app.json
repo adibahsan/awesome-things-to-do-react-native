@@ -18,7 +18,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.adibahsan.awesomethingstodo",
+      "package": "com.adibahsan.myawesomethingstodo",
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#14C4F6"
