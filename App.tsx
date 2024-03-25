@@ -77,9 +77,11 @@ export default function App() {
           />
         </View>
 
-        <TouchableOpacity style={styles.buttonSmall} onPress={() => setModalVisible(true)}>
-          <Text style={styles.buttonSmallText}>Show Developer Info</Text>
-        </TouchableOpacity>
+        <View style={{justifyContent: 'center', flexDirection: 'row'}}>
+          <TouchableOpacity style={styles.buttonSmall} onPress={() => setModalVisible(true)}>
+            <Text style={styles.buttonSmallText}>Show Developer Info</Text>
+          </TouchableOpacity>
+        </View>
 
         {/*<Button  title="Show Developer Info" onPress={() => setModalVisible(true)} />*/}
         <Modal
@@ -90,12 +92,12 @@ export default function App() {
               setModalVisible(!modalVisible);
             }}
         >
-          <View style={styles.centeredView}>
+          <View style={styles.modalBackground}>
             <View style={styles.modalView}>
               <Text style={styles.modalText}>Developer Name: Adib Chowdhury</Text>
               <Text style={styles.modalText}>Developer Email: adibahsan@example.com</Text>
               <TouchableOpacity style={styles.buttonSmall} onPress={() => setModalVisible(false)}>
-                <Text style={styles.buttonSmallText}>Show Developer Info</Text>
+                <Text style={styles.buttonSmallText}>Hide Developer Info</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -190,13 +192,20 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   buttonSmall: {
-    borderRadius: 20,
+    borderRadius: 5,
     padding: 10,
+    marginBottom:10,
     backgroundColor: '#841584',
     width: 150,
     alignItems: 'center',
   },
   buttonSmallText: {
     color: 'white',
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // This will create a semi-transparent black background
   },
 });
